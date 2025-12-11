@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thai Food Knowledge</title>
+<style>
+  body { margin:0; font-family: 'Segoe UI', sans-serif; background:#111; color:#fff; }
+  header { background:#222; padding:20px; text-align:center; position:sticky; top:0; z-index:10; }
+  header h1 { margin:0; font-size:32px; }
+  #searchBar { width:90%; max-width:400px; padding:10px; border-radius:8px; border:none; margin-top:15px; }
+
+  .banner { width:100%; height:250px; background:url('banner.jpg'); background-size:cover; background-position:center; }
+
+  .container { padding:20px; display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:20px; }
+  .card { background:#1d1d1d; border-radius:15px; overflow:hidden; cursor:pointer; transition:0.3s; }
+  .card:hover { transform:scale(1.03); }
+  .card img { width:100%; height:180px; object-fit:cover; }
+  .card h3 { margin:15px; font-size:20px; }
+
+  /* popup */
+  #popup { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); justify-content:center; align-items:center; padding:20px; }
+  #popupContent { background:#222; padding:20px; border-radius:15px; max-width:500px; width:100%; }
+  #popupContent h2 { margin-top:0; }
+  #closeBtn { background:#ff4444; padding:10px 20px; border:none; border-radius:10px; cursor:pointer; margin-top:20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>เมนูอาหารไทย</h1>
+  <input type="text" id="searchBar" placeholder="ค้นหาอาหารไทย..." onkeyup="searchFood()">
+</header>
+
+<div class="banner"></div>
+
+<div class="container" id="foodList">
+  <div class="card" data-food="padthai">
+    <img src="padthai.jpg">
+    <h3>ผัดไทย</h3>
+  </div>
+
+  <div class="card" data-food="tomyum">
+    <img src="tomyum.jpg">
+    <h3>ต้มยำกุ้ง</h3>
+  </div>
+
+  <div class="card" data-food="greencurry">
+    <img src="greencurry.jpg">
+    <h3>แกงเขียวหวาน</h3>
+  </div>
+
+  <div class="card" data-food="kangsomsoup">
+    <img src="kangsomsoup.jpg">
+    <h3>แกงส้ม</h3>
+  </div>
+
+  <div class="card" data-food="kuakling">
+    <img src="kuakling.jpg">
+    <h3>คั่วกลิ้ง</h3>
+  </div>
+
+  <div class="card" data-food="larbmoo">
+    <img src="larbmoo.jpg">
+    <h3>ลาบหมู</h3>
+  </div>
+
+  <div class="card" data-food="panang">
+    <img src="panang.jpg">
+    <h3>แกงพะแนง</h3>
+  </div>
+
+  <div class="card" data-food="friedgarlicpork">
+    <img src="friedgarlicpork.jpg">
+    <h3>หมูทอดกระเทียม</h3>
+  </div>
+
+  <div class="card" data-food="massaman">
+    <img src="massaman.jpg">
+    <h3>แกงมัสมั่น</h3>
+  </div>
+
+  <div class="card" data-food="kaprao">
+    <img src="kaprao.jpg">
+    <h3>ผัดกะเพราไก่</h3>
+  </div>
+
+  <div class="card" data-food="khaosoi">
+    <img src="khaosoi.jpg">
+    <h3>ข้าวซอยไก่</h3>
+  </div>
+
+  <div class="card" data-food="yumwunsen">
+    <img src="yumwunsen.jpg">
+    <h3>ยำวุ้นเส้น</h3>
+  </div>
+
+  <div class="card" data-food="phalow">
+    <img src="phalow.jpg">
+    <h3>ไข่พะโล้</h3>
+  </div>
+</div>
+
+<!-- Popup -->
+<div id="popup">
+  <div id="popupContent">
+    <h2 id="foodTitle"></h2>
+    <p id="foodDetail"></p>
+    <button id="closeBtn" onclick="closePopup()">ปิด</button>
+  </div>
+</div>
+
+<script>
+const recipes = {
+  padthai: {
+    title: "ผัดไทย",
+    detail: "วัตถุดิบ: เส้นจันทน์, ไข่, เต้าหู้, ถั่วงอก, กุ้งแห้ง, น้ำมะขาม\n\nขั้นตอน: ลวกเส้นให้พอดี. ผัดไข่กับเต้าหู้และกุ้ง. ใส่เส้นผัดกับซอสและเครื่องปรุง. คลุกให้เข้ากัน ชิมรสและเสิร์ฟ."
+  },
+  tomyum: {
+    title: "ต้มยำกุ้ง",
+    detail: "วัตถุดิบ: กุ้ง, ข่า, ตะไคร้, ใบมะกรูด, พริก, น้ำมะนาว\n\nขั้นตอน: ต้มน้ำให้เดือด ใส่ข่า ตะไคร้ และใบมะกรูด. เติมกุ้งและเครื่องปรุง ต้มจนสุก. ปรุงรสด้วยน้ำมะนาวและพริก. เสิร์ฟร้อน."
+  },
+  greencurry: {
+    title: "แกงเขียวหวาน",
+    detail: "วัตถุดิบ: พริกแกงเขียว, มะเขือ, กะทิ, ไก่, ใบโหระพา\n\nขั้นตอน: ผัดพริกแกงกับกะทิจนหอม. ใส่ไก่และมะเขือ เคี่ยวจนสุก. ปรุงรสชิมให้กลมกล่อม. ใส่ใบโหระพา เสิร์ฟร้อน."
+  },
+  kangsomsoup: {
+    title: "แกงส้ม",
+    detail: "วัตถุดิบ: กุ้ง, ผักรวม, พริกแกงส้ม, น้ำมะขาม\n\nขั้นตอน: ต้มน้ำและพริกแกงส้มจนเดือด. ใส่ผักและกุ้ง ต้มจนสุก. ปรุงรสด้วยน้ำมะขามและเกลือ. เสิร์ฟร้อน."
+  },
+  kuakling: {
+    title: "คั่วกลิ้ง",
+    detail: "วัตถุดิบ: หมูสับ, พริกแกงใต้, ใบมะกรูด\n\nขั้นตอน: ผัดพริกแกงกับหมูสับจนแห้งและหอม. ใส่ใบมะกรูดซอย ผัดต่อให้เข้ากัน. เสิร์ฟร้อนกับข้าวสวย."
+  },
+  larbmoo: {
+    title: "ลาบหมู",
+    detail: "วัตถุดิบ: หมูสับ, ข้าวคั่ว, พริกป่น, มะนาว, ผักสด\n\nขั้นตอน: คลุกหมูสับกับพริกป่นและข้าวคั่ว. ปรุงรสด้วยน้ำมะนาวและน้ำปลา. โรยผักสด เสิร์ฟทันที."
+  },
+  panang: {
+    title: "แกงพะแนง",
+    detail: "วัตถุดิบ: พริกแกงพะแนง, เนื้อ, กะทิ, ใบมะกรูด\n\nขั้นตอน: ผัดพริกแกงกับกะทิจนหอม. ใส่เนื้อและเคี่ยวจนสุก. เติมใบมะกรูด ชิมรสให้กลมกล่อม. เสิร์ฟร้อน."
+  },
+  friedgarlicpork: {
+    title: "หมูทอดกระเทียม",
+    detail: "วัตถุดิบ: หมู, กระเทียม, ซีอิ๊ว, น้ำปลา\n\nขั้นตอน: หมักหมูด้วยเครื่องปรุงและกระเทียม. ทอดจนกรอบและหอม. จัดใส่จานพร้อมเสิร์ฟ."
+  },
+  massaman: {
+    title: "แกงมัสมั่น",
+    detail: "วัตถุดิบ: พริกแกงมัสมั่น, มันฝรั่ง, ไก่/เนื้อ, ถั่วลิสง\n\nขั้นตอน: ผัดพริกแกงกับกะทิจนหอม. ใส่เนื้อและมันฝรั่ง เคี่ยวจนสุก. เติมถั่วลิสง ปรุงรสและเสิร์ฟ."
+  },
+  kaprao: {
+    title: "ผัดกะเพราไก่",
+    detail: "วัตถุดิบ: ไก่, กระเพรา, พริก, กระเทียม\n\nขั้นตอน: ผัดกระเทียมกับพริกจนหอม. ใส่ไก่ผัดจนสุก. เติมใบกะเพราและปรุงรส ชิมรสก่อนเสิร์ฟ."
+  },
+  khaosoi: {
+    title: "ข้าวซอยไก่",
+    detail: "วัตถุดิบ: เส้นข้าวซอย, พริกแกง, กะทิ, ไก่, เครื่องเคียง\n\nขั้นตอน: เคี่ยวไก่กับพริกแกงและกะทิจนสุก. ใส่เส้นข้าวซอย ต้มจนเส้นนุ่ม. เสิร์ฟพร้อมเครื่องเคียง."
+  },
+  yumwunsen: {
+    title: "ยำวุ้นเส้น",
+    detail: "วัตถุดิบ: วุ้นเส้น, หมูสับ, กุ้ง, มะเขือเทศ, พริกน้ำปลา\n\nขั้นตอน: ลวกวุ้นเส้นจนสุก. คลุกกับหมูสับ กุ้ง และเครื่องปรุง. ปรุงรสตามชอบ เสิร์ฟทันที."
+  },
+  phalow: {
+    title: "ไข่พะโล้",
+    detail: "วัตถุดิบ: ไข่, หมูสามชั้น, เครื่องพะโล้, ซีอิ๊ว\n\nขั้นตอน: ต้มหมูสามชั้นกับเครื่องพะโล้จนเปื่อย. ใส่ไข่ต้มแล้วเคี่ยวต่อจนเข้ากัน. ปรุงรสและเสิร์ฟ."
+  }
+};
+
+function searchFood() {
+  let input = document.getElementById('searchBar').value.toLowerCase();
+  let cards = document.querySelectorAll('.card');
+
+  cards.forEach(card => {
+    let title = card.querySelector('h3').innerText.toLowerCase();
+    card.style.display = title.includes(input) ? 'block' : 'none';
+  });
+}
+
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', () => {
+    const key = card.getAttribute('data-food');
+    const recipe = recipes[key];
+    document.getElementById('foodTitle').innerText = recipe.title;
+    document.getElementById('foodDetail').innerText = recipe.detail;
+    document.getElementById('popup').style.display = 'flex';
+  });
+});
+
+function closePopup(){
+  document.getElementById('popup').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
