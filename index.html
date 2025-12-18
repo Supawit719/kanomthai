@@ -3,193 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thai Food Knowledge</title>
+<title>ขนมไทยโบราณ | สอนทำขนมไทย</title>
 <style>
-  body { margin:0; font-family: 'Segoe UI', sans-serif; background:#111; color:#fff; }
-  header { background:#222; padding:20px; text-align:center; position:sticky; top:0; z-index:10; }
-  header h1 { margin:0; font-size:32px; }
-  #searchBar { width:90%; max-width:400px; padding:10px; border-radius:8px; border:none; margin-top:15px; }
-
-  .banner { width:100%; height:250px; background:url('banner.jpg'); background-size:cover; background-position:center; }
-
-  .container { padding:20px; display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:20px; }
-  .card { background:#1d1d1d; border-radius:15px; overflow:hidden; cursor:pointer; transition:0.3s; }
-  .card:hover { transform:scale(1.03); }
-  .card img { width:100%; height:180px; object-fit:cover; }
-  .card h3 { margin:15px; font-size:20px; }
-
-  /* popup */
-  #popup { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); justify-content:center; align-items:center; padding:20px; }
-  #popupContent { background:#222; padding:20px; border-radius:15px; max-width:500px; width:100%; }
-  #popupContent h2 { margin-top:0; }
-  #closeBtn { background:#ff4444; padding:10px 20px; border:none; border-radius:10px; cursor:pointer; margin-top:20px; }
+body{margin:0;font-family:'Segoe UI',Tahoma,sans-serif;background:#fdf7f0;color:#3b2f2f}
+header{background:linear-gradient(135deg,#b76e79,#f3c5c5);color:#fff;padding:30px;text-align:center}
+header h1{margin:0;font-size:2.5rem}
+header p{opacity:.95}
+nav{background:#fff;position:sticky;top:0;z-index:10;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+nav ul{list-style:none;margin:0;padding:10px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+nav a{text-decoration:none;color:#b76e79;font-weight:600}
+section{padding:50px 8%;max-width:1200px;margin:auto}
+.recipe{background:#fff;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.08);margin-bottom:40px;overflow:hidden;display:grid;grid-template-columns:1fr 1.3fr}
+.recipe img{width:100%;height:100%;object-fit:cover}
+.recipe-content{padding:30px}
+.recipe h2{margin-top:0;color:#b76e79}
+.recipe h3{margin-bottom:5px}
+.recipe ul{margin-top:5px}
+footer{text-align:center;background:#3b2f2f;color:#fff;padding:20px}
+@media(max-width:900px){.recipe{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
 <header>
-  <h1>เมนูอาหารไทย</h1>
-  <input type="text" id="searchBar" placeholder="ค้นหาอาหารไทย..." onkeyup="searchFood()">
+<h1>ขนมไทยโบราณ</h1>
+<p>เว็บไซต์สอนทำขนมไทยแบบดั้งเดิม ทำง่าย อธิบายละเอียด</p>
 </header>
 
-<div class="banner"></div>
-
-<div class="container" id="foodList">
-  <div class="card" data-food="padthai">
-    <img src="image/pattai.png">
-    <h3>ผัดไทย</h3>
+<nav>
+  <div style="display:flex;justify-content:center;align-items:center;gap:10px;padding:10px;flex-wrap:wrap">
+    <input type="text" id="searchInput" placeholder="ค้นหาขนมไทย..." style="padding:10px 14px;border-radius:20px;border:1px solid #ccc;min-width:260px;font-size:1rem">
+    <button onclick="searchRecipe()" style="padding:10px 20px;border:none;border-radius:20px;background:#b76e79;color:#fff;font-size:1rem;cursor:pointer">ค้นหา</button>
   </div>
+</nav>
 
-  <div class="card" data-food="tomyum">
-    <img src="image/tomyam.png">
-    <h3>ต้มยำกุ้ง</h3>
-  </div>
+<section>
 
-  <div class="card" data-food="greencurry">
-    <img src="image/kangkewwan.png">
-    <h3>แกงเขียวหวาน</h3>
-  </div>
-
-  <div class="card" data-food="kangsomsoup">
-    <img src="image/kangsom.png">
-    <h3>แกงส้ม</h3>
-  </div>
-
-  <div class="card" data-food="kuakling">
-    <img src="image/king.png">
-    <h3>คั่วกลิ้ง</h3>
-  </div>
-
-  <div class="card" data-food="larbmoo">
-    <img src="image/labmu.png">
-    <h3>ลาบหมู</h3>
-  </div>
-
-  <div class="card" data-food="panang">
-    <img src="image/panang.png">
-    <h3>แกงพะแนง</h3>
-  </div>
-
-  <div class="card" data-food="friedgarlicpork">
-    <img src="image/mutod.png">
-    <h3>หมูทอดกระเทียม</h3>
-  </div>
-
-  <div class="card" data-food="massaman">
-    <img src="image/mussamun.png">
-    <h3>แกงมัสมั่น</h3>
-  </div>
-
-  <div class="card" data-food="kaprao">
-    <img src="image/padkaparl.png">
-    <h3>ผัดกะเพราไก่</h3>
-  </div>
-
-  <div class="card" data-food="khaosoi">
-    <img src="image/kawkai.png">
-    <h3>ข้าวซอยไก่</h3>
-  </div>
-
-  <div class="card" data-food="yumwunsen">
-    <img src="image/yumsan.png">
-    <h3>ยำวุ้นเส้น</h3>
-  </div>
-
-  <div class="card" data-food="phalow">
-    <img src="image/palo.png">
-    <h3>ไข่พะโล้</h3>
-  </div>
+<div class="recipe" id="kanomtom">
+<img src="https://images.unsplash.com/photo-1604908554166-3c1a7f5b4b3d" alt="ขนมต้ม">
+<div class="recipe-content">
+<h2>ขนมต้ม</h2>
+<h3>วัตถุดิบ</h3>
+<ul>
+<li>แป้งข้าวเหนียว 250 กรัม</li>
+<li>มะพร้าวขูด 1 ถ้วย</li>
+<li>น้ำตาลมะพร้าว 150 กรัม</li>
+<li>เกลือเล็กน้อย</li>
+</ul>
+<h3>วิธีทำ</h3>
+<p>ผสมมะพร้าวขูด น้ำตาล และเกลือ กวนจนเหนียว ปั้นเป็นไส้ พักไว้ นำแป้งข้าวเหนียวผสมน้ำอุ่น นวดจนเนียน ห่อไส้ ต้มในน้ำเดือดจนลอย ตักขึ้นคลุกมะพร้าวขูด พร้อมเสิร์ฟ</p>
+</div>
 </div>
 
-<!-- Popup -->
-<div id="popup">
-  <div id="popupContent">
-    <h2 id="foodTitle"></h2>
-    <p id="foodDetail"></p>
-    <button id="closeBtn" onclick="closePopup()">ปิด</button>
-  </div>
+<div class="recipe" id="kanomchan">
+<img src="https://images.unsplash.com/photo-1621929747188-0b4dc28498d2" alt="ขนมชั้น">
+<div class="recipe-content">
+<h2>ขนมชั้น</h2>
+<h3>วัตถุดิบ</h3>
+<ul>
+<li>แป้งมัน 250 กรัม</li>
+<li>แป้งข้าวเจ้า 100 กรัม</li>
+<li>กะทิ 3 ถ้วย</li>
+<li>น้ำตาลทราย 2 ถ้วย</li>
+<li>ใบเตย</li>
+</ul>
+<h3>วิธีทำ</h3>
+<p>ผสมแป้งกับกะทิและน้ำตาล กรองให้เนียน แบ่งส่วนหนึ่งใส่น้ำใบเตย เทสลับสีเป็นชั้น ๆ นึ่งทีละชั้นจนสุกดี จะได้ขนมชั้นนุ่ม หอม หวานมัน</p>
+</div>
 </div>
 
+<div class="recipe" id="thongyod">
+<img src="https://images.unsplash.com/photo-1624013513733-2df7cba468e2" alt="ทองหยอด">
+<div class="recipe-content">
+<h2>ทองหยอด</h2>
+<h3>วัตถุดิบ</h3>
+<ul>
+<li>ไข่แดง 8 ฟอง</li>
+<li>แป้งข้าวเจ้า 1/2 ถ้วย</li>
+<li>น้ำเชื่อมเข้มข้น</li>
+</ul>
+<h3>วิธีทำ</h3>
+<p>ผสมไข่แดงกับแป้งให้เนียน ตักหยอดลงในน้ำเชื่อมเดือด เคี่ยวจนสุก ตักขึ้นแช่น้ำเชื่อมใส ได้ทองหยอดเม็ดสวย รสหวานหอม</p>
+</div>
+</div>
+
+<div class="recipe" id="kanomkrok">
+<img src="https://images.unsplash.com/photo-1603048296534-0c2a5a4c2f1a" alt="ขนมครก">
+<div class="recipe-content">
+<h2>ขนมครกโบราณ</h2>
+<h3>วัตถุดิบ</h3>
+<ul>
+<li>แป้งข้าวเจ้า 1 ถ้วย</li>
+<li>กะทิ 2 ถ้วย</li>
+<li>น้ำตาล 1/2 ถ้วย</li>
+<li>ต้นหอม / ข้าวโพด</li>
+</ul>
+<h3>วิธีทำ</h3>
+<p>ผสมแป้ง กะทิ น้ำตาล คนให้เข้ากัน หยอดลงเบ้าขนมครก ใส่หน้า ปิดฝา รอจนขอบกรอบ ด้านในนุ่ม พร้อมรับประทาน</p>
+</div>
+</div>
+
+<div class="recipe" id="kanomkloy">
+<img src="https://images.unsplash.com/photo-1617196034796-73b9d9ac0c2a" alt="ขนมกล้วย">
+<div class="recipe-content">
+<h2>ขนมกล้วย</h2>
+<h3>วัตถุดิบ</h3>
+<ul>
+<li>กล้วยน้ำว้าสุก</li>
+<li>แป้งข้าวเจ้า</li>
+<li>กะทิ</li>
+<li>น้ำตาลมะพร้าว</li>
+</ul>
+<h3>วิธีทำ</h3>
+<p>บดกล้วย ผสมแป้ง กะทิ และน้ำตาล คนให้เข้ากัน เทใส่ถ้วย นึ่งประมาณ 20 นาที จะได้ขนมกล้วยเนื้อนุ่ม หอมหวาน</p>
+</div>
+</div>
+
+
+
+<div class="recipe" id="kanomtuay">
+<img src="https://images.unsplash.com/photo-1609758361807-8d3e3b9d7b7a" alt="ขนมถ้วย">
+<div class="recipe-content">
+<h2>ขนมถ้วย</h2>
+<h3>วัตถุดิบ</h3>
+<ul>
+<li>แป้งข้าวเจ้า 1 ถ้วย</li>
+<li>น้ำตาลมะพร้าว 1 ถ้วย</li>
+<li>กะทิ 2 ถ้วย</li>
+<li>เกลือเล็กน้อย</li>
+</ul>
+<h3>วิธีทำ</h3>
+<p>ผสมแป้งกับน้ำตาลและกะทิส่วนหนึ่ง เทใส่ถ้วย นึ่งจนสุก จากนั้นผสมกะทิและเกลือทำหน้าขนม เททับแล้วนึ่งต่อจนหน้าขาวเนียน</p>
+</div>
+</div>
+
+<div class="recipe" id="kanompiaakpoon">
+<img src="https://images.unsplash.com/photo-1627308595186-e6f6b4c4f8fa" alt="ขนมเปียกปูน">
+<div class="recipe-content">
+<h2>ขนมเปียกปูน</h2>
+<h3>วัตถุดิบ</h3>
+<ul>
+<li>แป้งข้าวเจ้า 1 ถ้วย</li>
+<li>น้ำปูนใส</li>
+<li>น้ำใบเตย</li>
+<li>กะทิ</li>
+</ul>
+<h3>วิธีทำ</h3>
+<p>ผสมแป้งกับน้ำใบเตยและน้ำปูนใส กวนบนไฟอ่อนจนเหนียว เทใส่พิมพ์ ราดกะทิด้านบน ได้รสหวานมันหอมใบเตย</p>
+</div>
+</div>
+
+<div class="recipe" id="kanomsodsaai">
+<img src="https://images.unsplash.com/photo-1617191519105-5c8a5b2c54c4" alt="ขนมสอดไส้">
+<div class="recipe-content">
+<h2>ขนมสอดไส้</h2>
+<h3>วัตถุดิบ</h3>
+<ul>
+<li>แป้งข้าวเจ้า</li>
+<li>มะพร้าวขูด</li>
+<li>น้ำตาลมะพร้าว</li>
+<li>กะทิ</li>
+</ul>
+<h3>วิธีทำ</h3>
+<p>กวนมะพร้าวกับน้ำตาลทำไส้ ปั้นก้อน ห่อด้วยแป้ง นึ่งจนสุก ราดหน้ากะทิ จะได้ขนมรสนุ่มหวานมัน</p>
+</div>
+</div>
+
+<div class="recipe" id="kanomfangbua">
+<img src="https://images.unsplash.com/photo-1625480845948-1cfd3c77a8f6" alt="ขนมฝักบัว">
+<div class="recipe-content">
+<h2>ขนมฝักบัว</h2>
+<h3>วัตถุดิบ</h3>
+<ul>
+<li>แป้งข้าวเจ้า</li>
+<li>แป้งข้าวเหนียว</li>
+<li>น้ำตาลทราย</li>
+<li>น้ำมันพืช</li>
+</ul>
+<h3>วิธีทำ</h3>
+<p>ผสมแป้งกับน้ำตาลและน้ำ พักให้ขึ้นฟู ตักทอดในน้ำมันร้อนจนเหลืองกรอบนอกนุ่มใน</p>
+</div>
+</div>
+
+<div class="recipe" id="kanomkheng">
+<img src="https://images.unsplash.com/photo-1607082349566-187342175e2f" alt="ขนมเข่ง">
+<div class="recipe-content">
+<h2>ขนมเข่ง</h2>
+<h3>วัตถุดิบ</h3>
+<ul>
+<li>แป้งข้าวเหนียว 1 กิโลกรัม</li>
+<li>น้ำตาลมะพร้าว</li>
+<li>น้ำเปล่า</li>
+</ul>
+<h3>วิธีทำ</h3>
+<p>ผสมแป้งกับน้ำตาลและน้ำ คนจนเนียน เทใส่พิมพ์ นึ่งประมาณ 1 ชั่วโมง จะได้ขนมเข่งเนื้อเหนียวนุ่ม</p>
+</div>
+</div>
+
+</section>
+
+<footer>
+<p>© 2025 เว็บไซต์สอนทำขนมไทยโบราณ | ใช้เพื่อการศึกษา</p>
+</footer>
 <script>
-const recipes = {
-  padthai: {
-    title: "ผัดไทย",
-    detail: "วัตถุดิบ: เส้นจันทน์, ไข่, เต้าหู้, ถั่วงอก, กุ้งแห้ง, น้ำมะขาม\n\nขั้นตอน: ลวกเส้นให้พอดี. ผัดไข่กับเต้าหู้และกุ้ง. ใส่เส้นผัดกับซอสและเครื่องปรุง. คลุกให้เข้ากัน ชิมรสและเสิร์ฟ."
-  },
-  tomyum: {
-    title: "ต้มยำกุ้ง",
-    detail: "วัตถุดิบ: กุ้ง, ข่า, ตะไคร้, ใบมะกรูด, พริก, น้ำมะนาว\n\nขั้นตอน: ต้มน้ำให้เดือด ใส่ข่า ตะไคร้ และใบมะกรูด. เติมกุ้งและเครื่องปรุง ต้มจนสุก. ปรุงรสด้วยน้ำมะนาวและพริก. เสิร์ฟร้อน."
-  },
-  greencurry: {
-    title: "แกงเขียวหวาน",
-    detail: "วัตถุดิบ: พริกแกงเขียว, มะเขือ, กะทิ, ไก่, ใบโหระพา\n\nขั้นตอน: ผัดพริกแกงกับกะทิจนหอม. ใส่ไก่และมะเขือ เคี่ยวจนสุก. ปรุงรสชิมให้กลมกล่อม. ใส่ใบโหระพา เสิร์ฟร้อน."
-  },
-  kangsomsoup: {
-    title: "แกงส้ม",
-    detail: "วัตถุดิบ: กุ้ง, ผักรวม, พริกแกงส้ม, น้ำมะขาม\n\nขั้นตอน: ต้มน้ำและพริกแกงส้มจนเดือด. ใส่ผักและกุ้ง ต้มจนสุก. ปรุงรสด้วยน้ำมะขามและเกลือ. เสิร์ฟร้อน."
-  },
-  kuakling: {
-    title: "คั่วกลิ้ง",
-    detail: "วัตถุดิบ: หมูสับ, พริกแกงใต้, ใบมะกรูด\n\nขั้นตอน: ผัดพริกแกงกับหมูสับจนแห้งและหอม. ใส่ใบมะกรูดซอย ผัดต่อให้เข้ากัน. เสิร์ฟร้อนกับข้าวสวย."
-  },
-  larbmoo: {
-    title: "ลาบหมู",
-    detail: "วัตถุดิบ: หมูสับ, ข้าวคั่ว, พริกป่น, มะนาว, ผักสด\n\nขั้นตอน: คลุกหมูสับกับพริกป่นและข้าวคั่ว. ปรุงรสด้วยน้ำมะนาวและน้ำปลา. โรยผักสด เสิร์ฟทันที."
-  },
-  panang: {
-    title: "แกงพะแนง",
-    detail: "วัตถุดิบ: พริกแกงพะแนง, เนื้อ, กะทิ, ใบมะกรูด\n\nขั้นตอน: ผัดพริกแกงกับกะทิจนหอม. ใส่เนื้อและเคี่ยวจนสุก. เติมใบมะกรูด ชิมรสให้กลมกล่อม. เสิร์ฟร้อน."
-  },
-  friedgarlicpork: {
-    title: "หมูทอดกระเทียม",
-    detail: "วัตถุดิบ: หมู, กระเทียม, ซีอิ๊ว, น้ำปลา\n\nขั้นตอน: หมักหมูด้วยเครื่องปรุงและกระเทียม. ทอดจนกรอบและหอม. จัดใส่จานพร้อมเสิร์ฟ."
-  },
-  massaman: {
-    title: "แกงมัสมั่น",
-    detail: "วัตถุดิบ: พริกแกงมัสมั่น, มันฝรั่ง, ไก่/เนื้อ, ถั่วลิสง\n\nขั้นตอน: ผัดพริกแกงกับกะทิจนหอม. ใส่เนื้อและมันฝรั่ง เคี่ยวจนสุก. เติมถั่วลิสง ปรุงรสและเสิร์ฟ."
-  },
-  kaprao: {
-    title: "ผัดกะเพราไก่",
-    detail: "วัตถุดิบ: ไก่, กระเพรา, พริก, กระเทียม\n\nขั้นตอน: ผัดกระเทียมกับพริกจนหอม. ใส่ไก่ผัดจนสุก. เติมใบกะเพราและปรุงรส ชิมรสก่อนเสิร์ฟ."
-  },
-  khaosoi: {
-    title: "ข้าวซอยไก่",
-    detail: "วัตถุดิบ: เส้นข้าวซอย, พริกแกง, กะทิ, ไก่, เครื่องเคียง\n\nขั้นตอน: เคี่ยวไก่กับพริกแกงและกะทิจนสุก. ใส่เส้นข้าวซอย ต้มจนเส้นนุ่ม. เสิร์ฟพร้อมเครื่องเคียง."
-  },
-  yumwunsen: {
-    title: "ยำวุ้นเส้น",
-    detail: "วัตถุดิบ: วุ้นเส้น, หมูสับ, กุ้ง, มะเขือเทศ, พริกน้ำปลา\n\nขั้นตอน: ลวกวุ้นเส้นจนสุก. คลุกกับหมูสับ กุ้ง และเครื่องปรุง. ปรุงรสตามชอบ เสิร์ฟทันที."
-  },
-  phalow: {
-    title: "ไข่พะโล้",
-    detail: "วัตถุดิบ: ไข่, หมูสามชั้น, เครื่องพะโล้, ซีอิ๊ว\n\nขั้นตอน: ต้มหมูสามชั้นกับเครื่องพะโล้จนเปื่อย. ใส่ไข่ต้มแล้วเคี่ยวต่อจนเข้ากัน. ปรุงรสและเสิร์ฟ."
-  }
-};
-
-function searchFood() {
-  let input = document.getElementById('searchBar').value.toLowerCase();
-  let cards = document.querySelectorAll('.card');
-
-  cards.forEach(card => {
-    let title = card.querySelector('h3').innerText.toLowerCase();
-    card.style.display = title.includes(input) ? 'block' : 'none';
+function searchRecipe(){
+  const input=document.getElementById('searchInput').value.toLowerCase();
+  const recipes=document.querySelectorAll('.recipe');
+  recipes.forEach(r=>{
+    const title=r.querySelector('h2').innerText.toLowerCase();
+    r.style.display= title.includes(input) ? 'grid' : 'none';
   });
-}
-
-document.querySelectorAll('.card').forEach(card => {
-  card.addEventListener('click', () => {
-    const key = card.getAttribute('data-food');
-    const recipe = recipes[key];
-    document.getElementById('foodTitle').innerText = recipe.title;
-    document.getElementById('foodDetail').innerText = recipe.detail;
-    document.getElementById('popup').style.display = 'flex';
-  });
-});
-
-function closePopup(){
-  document.getElementById('popup').style.display = 'none';
 }
 </script>
-
 </body>
 </html>
